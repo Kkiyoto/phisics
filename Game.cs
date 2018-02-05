@@ -19,7 +19,7 @@ public class Game : MonoBehaviour {
 	// Use this for initialization
 	void Start ()
     {
-        length = objs.Length;
+        length = objs.Length;//配列がpublicで、unity上で変えるから
         int i = Random.Range(0, length);
         obj = Instantiate(objs[i]) as GameObject;
         obj.transform.position = new Vector3(0, 4f, 0);
@@ -32,7 +32,7 @@ public class Game : MonoBehaviour {
 	// Update is called once per frame
 	void Update ()
     {
-        switch (state)
+        switch (state)//stateの値によって場合分けさせる
         {
             case Common.State.Wait:
                 Waiting();break;
@@ -45,7 +45,7 @@ public class Game : MonoBehaviour {
         }	
 	}
 
-    void Waiting()
+    void Waiting()//タッチしてないとき。カメラの移動メイン
     {
         if (Input.GetMouseButtonDown(0))
         {
@@ -73,7 +73,7 @@ public class Game : MonoBehaviour {
             height = Mathf.Clamp(height - vec.y * 0.1f, 0, highest + 30f);
         }
     }
-    void Selecting()
+    void Selecting()//タッチ中。どこに落とすか
     {
         if (Input.GetMouseButton(0))
         {
@@ -90,7 +90,7 @@ public class Game : MonoBehaviour {
             state = Common.State.Fall;
         }
     }
-    void Falling()
+    void Falling()//落ちてるとき。基本なんにも出来ない。
     {
         if (obj.GetComponent<Rigidbody>().velocity.magnitude < 0.1f) count++;
         else count = 0;
@@ -107,13 +107,13 @@ public class Game : MonoBehaviour {
             count = 0;
         }
     }
-    void Out()
+    void Out()//落ちた後
     {
         Vector3 vec = Result.position;
         Result.position = vec * 0.9f+new Vector3(Screen.width,Screen.height)*0.05f;
     }
 
-    private void OnCollisionEnter(Collision collision)
+    private void OnCollisionEnter(Collision collision)//落ちた判定
     {
         if (state!=Common.State.Out&&collision.gameObject.tag == "Object")
         {
@@ -124,12 +124,12 @@ public class Game : MonoBehaviour {
         }
     }
 
-    public void View(float delta)
+    public void View(float delta)//カメラのターゲット変更
     {
         cam_target.y = Mathf.Clamp(cam_target.y + delta, 0, highest + 8f);
         cam.LookAt(cam_target);
     }
-    public void Muve(int num)
+    public void Muve(int num)//視点変更
     {
         if (num == 0) obj.transform.Rotate(new Vector3(0, 1, 0), 30, Space.World);
         else if (num == 1) obj.transform.Rotate(obj.transform.position - cam.position, -30, Space.World);
