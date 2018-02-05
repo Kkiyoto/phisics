@@ -116,12 +116,16 @@ public class Game : MonoBehaviour {
 
     private void OnCollisionEnter(Collision collision)//落ちた判定
     {
-        if (state!=Common.State.Out&&collision.gameObject.tag == "Object")
+        if (collision.gameObject.tag == "Object")
         {
-            state = Common.State.Out;
-            Result = GameObject.Find("Result").GetComponent<RectTransform>();
-            Destroy(Score_text.gameObject);
-            GameObject.Find("RScore").GetComponent<Text>().text = "Score : " + score;
+            Destroy(collision.gameObject);
+            if (state != Common.State.Out)
+            {
+                state = Common.State.Out;
+                Result = GameObject.Find("Result").GetComponent<RectTransform>();
+                Destroy(Score_text.gameObject);
+                GameObject.Find("RScore").GetComponent<Text>().text = "Score : " + score;
+            }
         }
     }
 
