@@ -32,6 +32,7 @@ public class Game : MonoBehaviour {
 	// Update is called once per frame
 	void Update ()
     {
+        //:p@;ilujyht
         switch (state)//stateの値によって場合分けさせる
         {
             case Common.State.Wait:
